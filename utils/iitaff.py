@@ -17,6 +17,8 @@ if __name__ == '__main__':
     for idx,f in enumerate(all_labels):
         png_f = os.path.join(dest_path, os.path.splitext(os.path.basename(f))[0]+'.png')
         f = os.path.join(path_prefix, f.strip('\n'))
-        ann = np.loadtxt(f)
-        print(idx, f, ", shape:", ann.shape)
+        ann = np.loadtxt(f,dtype=np.uint8)
+        # print(ann.dtype)
+        # break
+        print(idx, '/', len(all_labels), f, ", shape:", ann.shape)
         imsave(png_f, ann)
