@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 from skimage.io import imsave
+from scipy.ndimage.interpolation import zoom # as SCIPY_zoom
 
 if __name__ == '__main__':
     print("Turn all annotations to png. Python >= 3.6 required.")
@@ -21,4 +22,6 @@ if __name__ == '__main__':
         # print(ann.dtype)
         # break
         print(idx, '/', len(all_labels), f, ", shape:", ann.shape)
+        w, h = ann.shape
+        ann = zoom(ann, (512.0 / w, 512.0 / h), order=0)
         imsave(png_f, ann)
