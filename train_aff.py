@@ -60,7 +60,9 @@ if __name__ == '__main__':
         path_prefix = '/home/niu/Liang_Niu3/IIT_Affordances_2017/'
         train_file_path = os.path.join(path_prefix, 'fcn_train_and_val.txt')
         val_file_path   = os.path.join(path_prefix, 'fcn_val.txt')
-        data_dir        = os.path.join(path_prefix, 'rgb_origin')
+        # data_dir        = os.path.join(path_prefix, 'rgb_origin')
+        data_dir        = os.path.join(path_prefix, 'rgb') # 512x512 images
+        target_size = (512, 512)
         label_dir       = os.path.join(path_prefix, 'affordances_labels_png')
         data_suffix='.jpg'
         label_suffix='.png'
