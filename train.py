@@ -29,7 +29,9 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
           label_suffix='.png',
           data_suffix='.jpg',
           ignore_label=255,
-          label_cval=255):
+          label_cval=255,
+          log_dir='logs'
+          ):
     if target_size:
         input_shape = target_size + (3,)
     else:
@@ -108,7 +110,7 @@ def train(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
 
     # ####################### tfboard ###########################
     if K.backend() == 'tensorflow':
-        tensorboard = TensorBoard(log_dir=os.path.join(save_path, 'logs'), histogram_freq=0, write_graph=True)
+        tensorboard = TensorBoard(log_dir=os.path.join(save_path, log_dir), histogram_freq=0, write_graph=True)
         callbacks.append(tensorboard)
     # ################### checkpoint saver#######################
     checkpoint = ModelCheckpoint(filepath=os.path.join(save_path, 'checkpoint_weights.hdf5'), save_weights_only=True)#.{epoch:d}

@@ -91,4 +91,5 @@ if __name__ == '__main__':
           dataset=dataset,
           data_suffix=data_suffix,
           label_suffix=label_suffix,
+          log_dir='logs_aff',
           )
