@@ -24,6 +24,7 @@ if __name__ == '__main__':
     # model_name = 'AtrousFCN_Resnet50_16s'
     #model_name = 'Atrous_DenseNet'
     model_name = 'DenseNet_FCN'
+    # model_name = 'FCN_Resnet50_32s'
     batch_size = 2
     batchnorm_momentum = 0.95
     epochs = 450
@@ -60,10 +61,12 @@ if __name__ == '__main__':
         class_weight = None
     if dataset == 'IIT-AFF':
         path_prefix = '/home/niu/Liang_Niu3/'
-        train_file_path = os.path.join(path_prefix,'fcn_train.txt')
+        train_file_path = os.path.join(path_prefix, 'fcn_train_and_val.txt')
         val_file_path   = os.path.join(path_prefix, 'fcn_val.txt')
         data_dir        = os.path.join(path_prefix, 'rgb_origin')
-        label_dir       = os.path.expanduser('affordances_labels')
+        label_dir       = os.path.join(path_prefix, 'affordances_labels_png')
+        data_suffix='.jpg'
+        label_suffix='.png'
         # 0-background,1-contain,2-cut,3-display,4-engine,5-grasp
         # 6-hit,7-pound,8-support,9-w-grasp (wrap grasp)
         classes = 10
@@ -73,6 +76,22 @@ if __name__ == '__main__':
     config = tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True))
     session = tf.Session(config=config)
     K.set_session(session)
-    train(batch_size, epochs, lr_base, lr_power, weight_decay, classes, model_name, train_file_path, val_file_path,
-          data_dir, label_dir, target_size=target_size, batchnorm_momentum=batchnorm_momentum, resume_training=resume_training,
-          class_weight=class_weight, dataset=dataset)
+    train(batch_size,
+          epochs,
+          lr_base,
+          lr_power,
+          weight_decay,
+          classes,
+          model_name,
+          train_file_path,
+          val_file_path,
+          data_dir,
+          label_dir,
+          target_size=target_size,
+          batchnorm_momentum=batchnorm_momentum,
+          resume_training=resume_training,
+          class_weight=class_weight,
+          dataset=dataset,
+          data_suffix=data_suffix,
+          label_suffix=label_suffix,
+          )
