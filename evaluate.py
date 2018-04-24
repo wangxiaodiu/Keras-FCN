@@ -53,7 +53,7 @@ def calculate_iou(model_name, nb_classes, res_dir, label_dir, image_list):
 def evaluate(model_name, weight_file, image_size, nb_classes, batch_size, val_file_path, data_dir, label_dir,
           label_suffix='.png',
           data_suffix='.jpg'):
-    current_dir = os.path.dirname(os.path.realpath(__file__))
+    current_dir = os.path.dirname(os.path.realpath('/home/niu/src/Keras-FCN/evaluate.py'))
     save_dir = os.path.join(current_dir, 'Models/'+model_name+'/res/')
     if os.path.exists(save_dir) == False:
         os.mkdir(save_dir)
@@ -62,7 +62,7 @@ def evaluate(model_name, weight_file, image_size, nb_classes, batch_size, val_fi
     fp.close()
 
     start_time = time.time()
-    inference(model_name, weight_file, image_size, image_list, data_dir, label_dir, return_results=False, save_dir=save_dir,
+    inference(model_name, weight_file, image_size, image_list, data_dir, label_dir, nb_classes=nb_classes, return_results=False, save_dir=save_dir,
               label_suffix=label_suffix, data_suffix=data_suffix)
     duration = time.time() - start_time
     print('{}s used to make predictions.\n'.format(duration))
@@ -105,7 +105,7 @@ if __name__ == '__main__':
     if dataset == 'IIT-AFF':
         path_prefix = '/home/niu/Liang_Niu3/IIT_Affordances_2017/'
         train_file_path = os.path.join(path_prefix, 'fcn_train_and_val.txt')
-        val_file_path   = os.path.join(path_prefix, 'fcn_val.txt')
+        val_file_path   = os.path.join(path_prefix, 'fcn_test.txt')
         # data_dir        = os.path.join(path_prefix, 'rgb_origin')
         data_dir        = os.path.join(path_prefix, 'rgb') # 512x512 images
         target_size = (512, 512)

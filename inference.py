@@ -13,7 +13,9 @@ from keras.applications.imagenet_utils import preprocess_input
 from models import *
 
 
-def inference(model_name, weight_file, image_size, image_list, data_dir, label_dir, return_results=True, save_dir=None,
+def inference(model_name, weight_file, image_size, image_list, data_dir, label_dir,
+        nb_classes,
+        return_results=True, save_dir=None,
               label_suffix='.png',
               data_suffix='.jpg'):
     current_dir = os.path.dirname(os.path.realpath(__file__))
@@ -29,7 +31,7 @@ def inference(model_name, weight_file, image_size, image_list, data_dir, label_d
     session = tf.Session(config=config)
     K.set_session(session)
 
-    model = globals()[model_name](batch_shape=batch_shape, input_shape=(512, 512, 3))
+    model = globals()[model_name](batch_shape=batch_shape, input_shape=(512, 512, 3), classes=nb_classes)
     model.load_weights(checkpoint_path, by_name=True)
 
     model.summary()
