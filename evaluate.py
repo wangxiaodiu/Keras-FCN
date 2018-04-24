@@ -83,9 +83,10 @@ if __name__ == '__main__':
     weight_file = 'checkpoint_weights.hdf5'
     # weight_file = 'model.hdf5'
     image_size = (512, 512)
-    nb_classes = 21
+    nb_classes = 10
     batch_size = 1
-    dataset = 'VOC2012_BERKELEY'
+    # dataset = 'VOC2012_BERKELEY'
+    dataset = 'IIT-AFF'
     if dataset == 'VOC2012_BERKELEY':
         # pascal voc + berkeley semantic contours annotations
         train_file_path = os.path.expanduser('~/.keras/datasets/VOC2012/combined_imageset_train.txt') #Data/VOClarge/VOC2012/ImageSets/Segmentation
@@ -101,5 +102,20 @@ if __name__ == '__main__':
         data_dir        = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/JPEGImages')
         label_dir       = os.path.expanduser('~/.keras/datasets/VOC2012/VOCdevkit/VOC2012/SegmentationClass')
         label_suffix = '.npy'
+    if dataset == 'IIT-AFF':
+        path_prefix = '/home/niu/Liang_Niu3/IIT_Affordances_2017/'
+        train_file_path = os.path.join(path_prefix, 'fcn_train_and_val.txt')
+        val_file_path   = os.path.join(path_prefix, 'fcn_val.txt')
+        # data_dir        = os.path.join(path_prefix, 'rgb_origin')
+        data_dir        = os.path.join(path_prefix, 'rgb') # 512x512 images
+        target_size = (512, 512)
+        label_dir       = os.path.join(path_prefix, 'affordances_labels_png')
+        data_suffix='.jpg'
+        label_suffix='.png'
+        # 0-background,1-contain,2-cut,3-display,4-engine,5-grasp
+        # 6-hit,7-pound,8-support,9-w-grasp (wrap grasp)
+        classes = 10
+        class_weight = None
+    print("begin to evaluate")
     evaluate(model_name, weight_file, image_size, nb_classes, batch_size, val_file_path, data_dir, label_dir,
-             label_suffix=label_suffix, data_suffix=data_suffix)
+    label_suffix=label_suffix, data_suffix=data_suffix)
