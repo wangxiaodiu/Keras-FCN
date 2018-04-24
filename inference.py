@@ -53,7 +53,7 @@ def inference(model_name, weight_file, image_size, image_list, data_dir, label_d
         # long_side = max(img_h, img_w, image_size[0], image_size[1])
         pad_w = max(image_size[1] - img_w, 0)
         pad_h = max(image_size[0] - img_h, 0)
-        image = np.lib.pad(image, ((pad_h/2, pad_h - pad_h/2), (pad_w/2, pad_w - pad_w/2), (0, 0)), 'constant', constant_values=0.)
+        image = np.lib.pad(image, ((pad_h // 2, pad_h - pad_h // 2), (pad_w // 2, pad_w - pad_w // 2), (0, 0)), 'constant', constant_values=0.)
         # image -= mean_value
         '''img = array_to_img(image, 'channels_last', scale=False)
         img.show()
@@ -69,7 +69,7 @@ def inference(model_name, weight_file, image_size, image_list, data_dir, label_d
         result_img = Image.fromarray(result, mode='P')
         result_img.palette = label.palette
         # result_img = result_img.resize(label_size, resample=Image.BILINEAR)
-        result_img = result_img.crop((pad_w/2, pad_h/2, pad_w/2+img_w, pad_h/2+img_h))
+        result_img = result_img.crop((pad_w // 2, pad_h // 2, pad_w // 2+img_w, pad_h // 2+img_h))
         # result_img.show(title='result')
         if return_results:
             results.append(result_img)
