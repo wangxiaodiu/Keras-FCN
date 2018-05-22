@@ -27,6 +27,8 @@ if __name__ == '__main__':
     ############ Configuration #################
     if CONFIG == 'SEG_AFF':
         model_name = 'AtrousFCN_Resnet50_Aff'
+        seg_classes = 21
+        aff_classes = 10
         batch_size = 8
         batchnorm_momentum = 0.95
         epochs = 250
@@ -34,7 +36,7 @@ if __name__ == '__main__':
         lr_power = 0.9
         resume_training = False
         weight_decay = 0.0001 / 2
-    if CONFIG == 'DEBUG':
+    elif CONFIG == 'DEBUG':
         model_name = 'AtrousFCN_Resnet50_Aff'
         weight_decay = 0.0001 / 2
         batchnorm_momentum = 0.95
@@ -67,7 +69,6 @@ if __name__ == '__main__':
         label_suffix='.png'
         # 0-background,1-contain,2-cut,3-display,4-engine,5-grasp
         # 6-hit,7-pound,8-support,9-w-grasp (wrap grasp)
-        classes = 10
         class_weight = None
 
 

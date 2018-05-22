@@ -579,7 +579,10 @@ class SegAffDirectoryIterator(Iterator):
     def __init__(self, file_path, seg_data_generator,
                  data_dir, data_suffix,
                  aff_label_dir, semantic_label_dir,
-                 label_suffix, classes, ignore_label=255,
+                 label_suffix,
+                 seg_classes,
+                 aff_classes,
+                 ignore_label=255,
                  crop_mode='none', label_cval=255, pad_size=None,
                  target_size=None, color_mode='rgb',
                  data_format='default', class_mode='sparse',
@@ -594,7 +597,8 @@ class SegAffDirectoryIterator(Iterator):
         self.label_suffix = label_suffix
         self.aff_label_dir = aff_label_dir
         self.semantic_label_dir = semantic_label_dir
-        self.classes = classes
+        self.aff_classes = aff_classes
+        self.seg_classes = seg_classes
         self.seg_data_generator = seg_data_generator
         self.target_size = tuple(target_size)
         self.ignore_label = ignore_label
@@ -757,8 +761,8 @@ class SegAffDirectoryIterator(Iterator):
             x = self.seg_data_generator.standardize(x)
 
             if self.ignore_label:
-                y1[np.where(y1 == self.ignore_label)] = self.classes
-                y2[np.where(y2 == self.ignore_label)] = self.classes
+                y1[np.where(y1 == self.ignore_label)] = self.aff_classes
+                y2[np.where(y2 == self.ignore_label)] = self.seg_classes
 
             if self.loss_shape is not None:
                 y1 = np.reshape(y1, self.loss_shape)
@@ -773,8 +777,8 @@ class SegAffDirectoryIterator(Iterator):
                 img = array_to_img(batch_x[i], self.data_format, scale=True)
                 aff_label = batch_y1[i][:, :, 0].astype('uint8')
                 semantic_label = batch_y2[i][:, :, 0].astype('uint8')
-                aff_label[np.where(aff_label == self.classes)] = self.ignore_label
-                semantic_label[np.where(aff_label == self.classes)] = self.ignore_label
+                aff_label[np.where(aff_label == self.aff_classes)] = self.ignore_label
+                semantic_label[np.where(aff_label == self.seg_classes)] = self.ignore_label
                 aff_label = Image.fromarray(aff_label, mode='P')
                 semantic_label = Image.fromarray(semantic_label, mode='P')
                 aff_label.palette = self.palette
@@ -859,7 +863,8 @@ class SegAffDataGenerator(object):
 
     def flow_from_directory(self, file_path, data_dir, data_suffix,
                             aff_label_dir, semantic_label_dir,
-                            label_suffix, classes,
+                            label_suffix,
+                            seg_classes, aff_classes,
                             ignore_label=255,
                             target_size=None, color_mode='rgb',
                             class_mode='sparse',
@@ -873,7 +878,9 @@ class SegAffDataGenerator(object):
             data_dir=data_dir, data_suffix=data_suffix,
             aff_label_dir=aff_label_dir, semantic_label_dir=semantic_label_dir,
             label_suffix=label_suffix,
-            classes=classes, ignore_label=ignore_label,
+            seg_classes=seg_classes,
+            aff_classes=aff_classes,
+            ignore_label=ignore_label,
             crop_mode=self.crop_mode, label_cval=self.label_cval,
             pad_size=self.pad_size,
             target_size=target_size, color_mode=color_mode,
