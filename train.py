@@ -19,7 +19,8 @@ from utils.SegDataGenerator import *
 import time
 import datetime
 
-def train_seg_aff(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
+def train_seg_aff(batch_size, epochs, lr_base, lr_power, weight_decay,
+                  seg_classes, aff_classes,
                   model_name, train_file_path, val_file_path,
                   data_dir, aff_label_dir, semantic_label_dir,
                   target_size=None, batchnorm_momentum=0.9,
@@ -82,7 +83,8 @@ def train_seg_aff(batch_size, epochs, lr_base, lr_power, weight_decay, classes,
     model = globals()[model_name](weight_decay=weight_decay,
                                   input_shape=input_shape,
                                   batch_momentum=batchnorm_momentum,
-                                  classes=classes)
+                                  seg_classes=seg_classes,
+                                  aff_classes=aff_classes)
 
     # ###################### optimizer ########################
     optimizer = SGD(lr=lr_base, momentum=0.9)

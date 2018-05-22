@@ -22,79 +22,47 @@ from utils.SegDataGenerator import *
 
 if __name__ == '__main__':
     dataset = 'IIT-AFF'
-    CONFIG = 'EXP' # Choose pre-configured set ('Pascal' -> train.py, 'COCO' -> train_coco.py)
+    CONFIG = 'SEG_AFF' # 'SEG_AFF'->train_seg_aff(), 'DEBUG' -> testing TODO: more configurations for experiments
 
-    ###########################################
-
-    if CONFIG == 'EXP':
+    ############ Configuration #################
+    if CONFIG == 'SEG_AFF':
         model_name = 'AtrousFCN_Resnet50_Aff'
-        if True: # for test
-            input_shape = (512,512,3)
-            weight_decay = 1e-4
-            batchnorm_momentum = 0.95
-            print('1')
-            seg_classes = 21
-            aff_classes = 10
-            model = globals()[model_name](weight_decay=weight_decay,
-                                  input_shape=input_shape,
-                                  batch_momentum=batchnorm_momentum,
-                                  seg_classes=seg_classes,
-                                  aff_classes=aff_classes)
-            print('2')
-            model.summary()
-            exit(0)
-        # model_name = 'Atrous_DenseNet'
-        # model_name = 'DenseNet_FCN'
-        batch_size = 16
-        batchnorm_momentum = 0.95
-        epochs = 250
-        lr_base = 0.01 * (float(batch_size) / 16)
-        lr_power = 0.9
-        resume_training = False
-        if model_name is 'AtrousFCN_Resnet50_16s':
-            weight_decay = 0.0001 / 2
-        else:
-            weight_decay = 1e-4
-    elif CONFIG == 'PASCAL':
-        model_name = 'AtrousFCN_Resnet50_16s'
-        # model_name = 'Atrous_DenseNet'
-        # model_name = 'DenseNet_FCN'
-        # batch_size = 16
         batch_size = 8
         batchnorm_momentum = 0.95
         epochs = 250
         lr_base = 0.01 * (float(batch_size) / 16)
         lr_power = 0.9
         resume_training = False
-        if model_name is 'AtrousFCN_Resnet50_16s':
-            weight_decay = 0.0001 / 2
-        else:
-            weight_decay = 1e-4
-    elif CONFIG == 'COCO':
-        # model_name = 'AtrousFCN_Resnet50_16s'
-        #model_name = 'Atrous_DenseNet'
-        model_name = 'DenseNet_FCN'
-        # model_name = 'FCN_Resnet50_32s'
-        batch_size = 2
+        weight_decay = 0.0001 / 2
+    if CONFIG == 'DEBUG':
+        model_name = 'AtrousFCN_Resnet50_Aff'
+        weight_decay = 0.0001 / 2
         batchnorm_momentum = 0.95
-        epochs = 450
-        lr_base = 0.2 * (float(batch_size) / 4)
-        lr_power = float(1)/float(30)
-        resume_training=False
-        weight_decay = 0.0001/2
-        target_size = (320, 320)
+        input_shape = (512,512,3)
+        seg_classes = 21
+        aff_classes = 10
+        model = globals()[model_name](weight_decay=weight_decay,
+                              input_shape=input_shape,
+                              batch_momentum=batchnorm_momentum,
+                              seg_classes=seg_classes,
+                              aff_classes=aff_classes)
+        model.summary()
+        exit(0)
     else:
         print("Config not set correctly, check the code.")
         exit(1)
-    ##########################################
+    ############ Datasets Setting ############
     if dataset == 'IIT-AFF':
         path_prefix = '/home/niu/Liang_Niu3/IIT_Affordances_2017/'
-        train_file_path = os.path.join(path_prefix, 'fcn_test.txt')
-        val_file_path   = os.path.join(path_prefix, 'fcn_val.txt')
+        # train_file_path = os.path.join(path_prefix, 'fcn_train_and_val.txt')
+        # val_file_path   = os.path.join(path_prefix, 'fcn_test.txt')
+        train_file_path = os.path.join(path_prefix, 'train_and_val.txt')
+        val_file_path   = os.path.join(path_prefix, 'test.txt')
         # data_dir        = os.path.join(path_prefix, 'rgb_origin')
         data_dir        = os.path.join(path_prefix, 'rgb') # 512x512 images
         target_size = (512, 512)
-        label_dir       = os.path.join(path_prefix, 'affordances_labels_png')
+        aff_label_dir       = os.path.join(path_prefix, 'affordances_labels_png')
+        semantic_label_dir = os.path.join(path_prefix, "semantic_labels_png")
         data_suffix='.jpg'
         label_suffix='.png'
         # 0-background,1-contain,2-cut,3-display,4-engine,5-grasp
@@ -106,23 +74,29 @@ if __name__ == '__main__':
     config = tf.ConfigProto(gpu_options=tf.GPUOptions(allow_growth=True))
     session = tf.Session(config=config)
     K.set_session(session)
-    train(batch_size,
-          epochs,
-          lr_base,
-          lr_power,
-          weight_decay,
-          classes,
-          model_name,
-          train_file_path,
-          val_file_path,
-          data_dir,
-          label_dir,
-          target_size=target_size,
-          batchnorm_momentum=batchnorm_momentum,
-          resume_training=resume_training,
-          class_weight=class_weight,
-          dataset=dataset,
-          data_suffix=data_suffix,
-          label_suffix=label_suffix,
-          log_dir='logs_aff',
-          )
+    if CONFIG == 'SEG_AFF':
+        train_seg_aff(batch_size,
+                      epochs,
+                      lr_base,
+                      lr_power,
+                      weight_decay,
+                      seg_classes,
+                      aff_classes,
+                      model_name,
+                      train_file_path,
+                      val_file_path,
+                      data_dir,
+                      aff_label_dir,
+                      semantic_label_dir,
+                      target_size=target_size,
+                      batchnorm_momentum=batchnorm_momentum,
+                      resume_training=resume_training,
+                      class_weight=class_weight,
+                      dataset=dataset,
+                      data_suffix=data_suffix,
+                      label_suffix=label_suffix,
+                      log_dir='logs_segaff',
+                      )
+        print("Done Training.")
+    else:
+        print("Wrong Congiguration")
