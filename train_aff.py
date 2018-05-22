@@ -27,8 +27,10 @@ if __name__ == '__main__':
     ############ Configuration #################
     if CONFIG == 'SEG_AFF':
         model_name = 'AtrousFCN_Resnet50_Aff'
-        seg_classes = 21
-        aff_classes = 10
+        seg_classes = 80 # 80 + 1, coco
+        aff_classes = 10 # 9 + 1, iitaff
+        # 0-background,1-contain,2-cut,3-display,4-engine,5-grasp
+        # 6-hit,7-pound,8-support,9-w-grasp (wrap grasp)
         batch_size = 8
         batchnorm_momentum = 0.95
         epochs = 250
@@ -65,8 +67,6 @@ if __name__ == '__main__':
         semantic_label_dir = os.path.join(path_prefix, "semantic_labels_png")
         data_suffix='.jpg'
         label_suffix='.png'
-        # 0-background,1-contain,2-cut,3-display,4-engine,5-grasp
-        # 6-hit,7-pound,8-support,9-w-grasp (wrap grasp)
         class_weight = None
 
 
