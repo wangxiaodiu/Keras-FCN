@@ -684,11 +684,16 @@ class SegAffDirectoryIterator(Iterator):
             if self.loss_shape is None and self.label_file_format is 'img':
                 batch_y1 = np.zeros((current_batch_size,) + self.label_shape,
                                    dtype=int)
+                batch_y2 = np.zeros((current_batch_size,) + self.label_shape,
+                                    dtype=int)
             elif self.loss_shape is None:
                 batch_y1 = np.zeros((current_batch_size,) + self.label_shape)
+                batch_y2 = np.zeros((current_batch_size,) + self.label_shape)
             else:
                 batch_y1 = np.zeros((current_batch_size,) + self.loss_shape,
                                    dtype=np.uint8)
+                batch_y2 = np.zeros((current_batch_size,) + self.loss_shape,
+                                    dtype=np.uint8)
         grayscale = self.color_mode == 'grayscale'
         # build batch of image data and labels
         for i, j in enumerate(index_array):
