@@ -29,7 +29,7 @@ if __name__ == '__main__':
         model_name = 'AtrousFCN_Resnet50_16s'
         # model_name = 'Atrous_DenseNet'
         # model_name = 'DenseNet_FCN'
-        batch_size = 16
+        batch_size = 8
         batchnorm_momentum = 0.95
         epochs = 250
         lr_base = 0.01 * (float(batch_size) / 16)
@@ -86,7 +86,7 @@ if __name__ == '__main__':
           val_file_path,
           data_dir,
           label_dir,
-          # target_size=target_size,
+          target_size=target_size,
           batchnorm_momentum=batchnorm_momentum,
           resume_training=resume_training,
           class_weight=class_weight,
