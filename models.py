@@ -178,8 +178,9 @@ def AtrousFCN_Resnet50_Aff(input_shape = None, weight_decay=0., batch_momentum=0
 
     # segmentation classifying layer and affordance classifying layer
     seg = Conv2D(seg_classes, (1, 1), kernel_initializer='he_normal', activation='linear', padding='same', strides=(1, 1), kernel_regularizer=l2(weight_decay))(x)
-    aff = Concatenate()([x, seg])
-    aff = Conv2D(aff_classes, (1, 1), kernel_initializer='he_normal', activation='linear', padding='same', strides=(1, 1), kernel_regularizer=l2(weight_decay))(aff)
+    #aff = Concatenate()([x, seg])
+    #aff = Conv2D(aff_classes, (1, 1), kernel_initializer='he_normal', activation='linear', padding='same', strides=(1, 1), kernel_regularizer=l2(weight_decay))(aff)
+    aff = Conv2D(aff_classes, (1, 1), kernel_initializer='he_normal', activation='linear', padding='same', strides=(1, 1), kernel_regularizer=l2(weight_decay))(x)
 
     # upsampling layers
     seg = BilinearUpSampling2D(target_size=tuple(image_size), name="seg")(seg)

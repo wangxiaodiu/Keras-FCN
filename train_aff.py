@@ -1,3 +1,5 @@
+## This is the training code for Liang Niu's experiments
+## for affordance/segmentation co-segmentation network
 import numpy as np
 import matplotlib.pyplot as plt
 from pylab import *
@@ -57,7 +59,9 @@ if __name__ == '__main__':
         exit(1)
     ############ Datasets Setting ############
     if dataset == 'IIT-AFF':
-        path_prefix = '/home/niu/Liang_Niu3/IIT_Affordances_2017/'
+        from config import DATASET_PATH
+        #path_prefix = '/home/niu/Liang_Niu3/IIT_Affordances_2017/'
+        path_prefix = DATASET_PATH
         train_file_path = os.path.join(path_prefix, 'fcn_train_and_val.txt')
         val_file_path   = os.path.join(path_prefix, 'fcn_test.txt')
         # data_dir        = os.path.join(path_prefix, 'rgb_origin')
