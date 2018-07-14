@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     ############ Configuration #################
     if CONFIG == 'SEG_AFF':
-        model_name = 'AtrousFCN_Resnet50_Aff'
+        model_name = 'AtrousFCN_Resnet50_Aff_Res'
         seg_classes = 80 # 80 + 1, coco
         aff_classes = 10 # 9 + 1, iitaff
         # 0-background,1-contain,2-cut,3-display,4-engine,5-grasp
