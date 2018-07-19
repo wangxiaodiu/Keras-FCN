@@ -90,7 +90,7 @@ def train_seg_aff(batch_size, epochs, lr_base, lr_power, weight_decay,
     optimizer = SGD(lr=lr_base, momentum=0.9)
     # optimizer = Nadam(lr=lr_base, beta_1 = 0.825, beta_2 = 0.99685)
 
-    model.compile(loss={'seg':loss_fn,'aff':loss_fn}, loss_weights = {'seg':0.3, 'aff':0.7},
+    model.compile(loss={'seg':loss_fn,'aff':loss_fn}, loss_weights = {'seg':0.2, 'aff':0.8},
                   optimizer=optimizer,
                   metrics=metrics)
     if resume_training:
